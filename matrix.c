@@ -11,10 +11,10 @@
 
   print the matrix
 */
-void print_matrix(struct matrix *m) {
+void print_matrix(struct matrix *m){
   for(int i = 0;i < m->rows;i++){
-    for(int j = 0;j < m->lastcol;j++){
-      printf("%d ",m->m[i][j]);
+    for(int j = 0;j < m->cols;j++){
+      printf("%f ",m->m[i][j]);
     }
     printf("\n");
   }
@@ -28,7 +28,7 @@ void print_matrix(struct matrix *m) {
 */
 void ident(struct matrix *m) {
   for(int i = 0;i < m->rows;i++){
-    for(int j = 0; j < m->lastcol;j++){
+    for(int j = 0; j < m->cols;j++){
       if(i == j){
 	m->m[i][j] = 1;
       }else{
@@ -48,7 +48,7 @@ void ident(struct matrix *m) {
 */
 void scalar_mult(double x, struct matrix *m) {
   for(int i = 0;i < m->rows;i++){
-    for(int j = 0;j < m->lastcol;j++){
+    for(int j = 0;j < m->cols;j++){
       m->m[i][j] *= x;
     }
   }
@@ -63,12 +63,16 @@ void scalar_mult(double x, struct matrix *m) {
   a*b -> b
 */
 void matrix_mult(struct matrix *a, struct matrix *b) {
-  struct matrix *nm = new_matrix(a->rows,b->lastcol);
+  int sum,val;
+  struct matrix *nm = new_matrix(a->rows,b->cols);
   for(int i = 0;i < a->rows;i++){
-    for(int j = 0;j < b->lastcol;j++){
-      for(int k = 0;k < a->lastcol;k++){
-	nm->m[i][j] = a->m[i][k] * b->m[k][j];
+    for(int j = 0;j < b->cols;j++){
+      sum = 0;
+      for(int k = 0;k < a->cols;k++){
+	val = (a->m[i][j] * b->m[k][j]);
+	sum += val;
       }
+      nm->m[i][j] = sum;
     }
   }
   copy_matrix(nm,b);
