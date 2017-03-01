@@ -64,6 +64,14 @@ void scalar_mult(double x, struct matrix *m) {
 */
 void matrix_mult(struct matrix *a, struct matrix *b) {
   struct matrix *nm = new_matrix(a->rows,b->lastcol);
+  for(int i = 0;i < a->rows;i++){
+    for(int j = 0;j < b->lastcol;j++){
+      for(int k = 0;k < a->lastcol;k++){
+	nm->m[i][j] = a->m[i][k] * b->m[k][j];
+      }
+    }
+  }
+  copy_matrix(nm,b);
 }
 
 
